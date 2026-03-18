@@ -1,4 +1,4 @@
-# 🎨 Portfolio — Salwa Zaaraoui · Business Data Analyst
+# 🎨 Portfolio · Business Data Analyst
 
 > **Live :** [slw-z.github.io](https://slw-z.github.io)
 
