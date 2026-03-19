@@ -1,4 +1,4 @@
-# 🎨 Portfolio · Business Data Analyst
+# 🎨 Portfolio — Salwa Zaaraoui · Business Data Analyst
 
 > **Live :** [slw-z.github.io](https://slw-z.github.io)
 
@@ -65,28 +65,29 @@ index.html
 │   ├── Liens de navigation centrés avec soulignement animé
 │   └── Bouton CV (base64 embarqué) — téléchargement direct
 │
-├── 🖼️ Hero — Bronze Eclipse 16:9
+├── 🖼️ Hero — Bronze Eclipse
 │   ├── Gradient #3C2A21 → #8E735B
 │   ├── Titre "BUSINESS DATA ANALYST" — effet shimmer animé
-│   └── Sous-ligne de stats centrée
+│   └── Sous-ligne : Automatisation n8n & BI · Optimisation 70% · Pipelines à impact
 │
 ├── 📡 Marquee — 20 logos défilants
-│   ├── Ligne unique, animation CSS infinie
+│   ├── Ligne unique centrée, animation CSS infinie
+│   ├── Fondu natif dans le background (#060403)
 │   └── Logos SVG inline couleurs officielles
 │
 ├── 👤 Mon Profil
 │   ├── Card identité (citation + localisation)
 │   ├── Bio 3 paragraphes
-│   └── Cards Formation + Expérience (animated + light burst)
+│   └── Cards Formation + Expérience (animated + light burst + glow hover)
+│
+├── 🎬 Animation interactive — Logo Jump Dashboard
+│   ├── Canvas 2D — personnages cartoon avec bras, jambes, yeux qui clignent
+│   ├── 5 personnages : CSV · DAX · Python · HTML · VSCode
+│   ├── Séquence : attente → course → saut → atterrissage → dashboard
+│   └── Dashboard Power BI live : KPIs · Bar chart · Donut · Sparkline rouge
 │
 ├── 💼 Projets Technique
-│   └── 2 cards égales — Quantum + STIB
-│
-├── ⚡ Services — Expanding Flex Cards
-│   ├── 4 cards CSS flex expansibles au hover
-│   ├── Gradient border animé (conic-gradient rotation)
-│   ├── Glow bar 85% width au hover
-│   └── Images en fond overlay
+│   └── 2 cards égales — Quantum Brussels · Monitoring STIB
 │
 ├── 📩 Contact
 │   └── CTA + badge disponibilité + bouton Outlook
@@ -106,7 +107,7 @@ index.html
 ```
 Suivi en `requestAnimationFrame` avec lag élastique sur le ring (`lerp 0.1`).
 
-### Effet Shimmer (titre hero)
+### Effet Shimmer (titre hero + titre dashboard)
 ```css
 .shimmer-title {
   background: linear-gradient(90deg, #b08d6a 0%, #ffffff 48%, #b08d6a 100%);
@@ -117,41 +118,71 @@ Suivi en `requestAnimationFrame` avec lag élastique sur le ring (`lerp 0.1`).
 }
 ```
 
-### Expanding Services Cards
+### Glow hover — toutes les cards
 ```css
-.options-container:has(.option:hover) .option { flex: 0.4; }
-.options-container:has(.option:hover) .option:hover { flex: 3; }
-/* transition: .5s cubic-bezier(0.05, 0.61, 0.41, 0.95) */
+.acard:hover {
+  border-color: rgba(176,141,106,0.5);
+  box-shadow: 0 0 30px rgba(176,141,106,0.18),
+              0 0 60px rgba(176,141,106,0.08),
+              inset 0 0 30px rgba(176,141,106,0.04);
+}
 ```
-Utilise `:has()` CSS natif — aucun JavaScript requis.
 
-### Light Burst au clic (cards)
-```javascript
-card.style.setProperty('--cx', x + '%');
-card.style.setProperty('--cy', y + '%');
-// radial-gradient positionné dynamiquement via CSS variables
+### Ligne lumineuse top — cards & dashboard
+```css
+.acard::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, var(--b-dark), var(--b-bright));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .4s cubic-bezier(0.05, 0.61, 0.41, 0.95);
+}
+.acard:hover::before { transform: scaleX(1); }
 ```
+Même effet sur le dashboard BI — la ligne se déploie dès que `.active`.
+
+### Animation Logo Jump — Canvas 2D
+```javascript
+const STATE = { WAITING:0, RUNNING:1, JUMPING:2, LANDING:3, FINISHED:4 };
+
+// Physique relative à la taille de l'écran
+const runSpeed     = W * 0.006;
+const gravity      = H * 0.0008;
+const jumpVelocity = H * -0.025;
+
+// Squash & stretch au saut
+const stretch = 1 + Math.abs(this.vy) * 0.002;
+this.scaleX = 1 / stretch;
+this.scaleY = stretch;
+```
+Chaque personnage démarre après que le précédent soit en course — séquence un par un, boucle automatique avec pause de 2.8s.
+
+### Dashboard Power BI live
+- **KPI cards** : Data Sources · Records · Accuracy avec barres de progression animées
+- **Bar chart** : une barre par personnage atterri, transition CSS `cubic-bezier`
+- **Donut SVG** : segments `stroke-dasharray` animés par `transform:rotate`
+- **Sparkline** : path SVG recalculé toutes les 3 frames, dégradé rouge temps réel
+- **Badge LIVE** : pulse CSS rouge · **Bordure** : ligne bronze `scaleX` au `.active`
 
 ### Marquee infini
 ```css
 .mtrack-r { animation: mr 35s linear infinite; }
 @keyframes mr { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-/* Contenu dupliqué pour boucle seamless */
+/* Contenu dupliqué · fondu natif #060403 · padding 48px vertical */
 ```
 
 ### Musique — YouTube IFrame API
 ```javascript
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player('yt-player', {
-    videoId: 'Q3ZmmKUV14o',
-    playerVars: { loop: 1, playlist: 'Q3ZmmKUV14o' }
+    videoId: 'w44dlsnJ1no',
+    playerVars: { loop: 1, playlist: 'w44dlsnJ1no' }
   });
 }
 ```
 > ⚠️ Requiert un contexte HTTPS — ne fonctionne pas en `file://` local.
 
 ### CV embarqué (base64)
-Le fichier `.docx` est encodé en base64 et injecté directement dans l'attribut `href` du bouton — **zéro serveur requis**, téléchargement natif du navigateur.
+Le fichier `.docx` est encodé en base64 et injecté dans l'attribut `href` — **zéro serveur requis**, téléchargement natif du navigateur.
 
 ### Reveal on scroll
 ```javascript
@@ -162,17 +193,25 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.05 });
 ```
 
+### Light Burst au clic
+```javascript
+card.style.setProperty('--cx', x + '%');
+card.style.setProperty('--cy', y + '%');
+// radial-gradient positionné dynamiquement via CSS custom properties
+```
+
 ---
 
 ## 🛠️ Stack
 
-| Technologie | Version | Usage |
-|---|---|---|
-| HTML5 | — | Structure sémantique |
-| CSS3 | — | Animations, Grid, Flexbox, `has()`, `conic-gradient` |
-| JavaScript ES6+ | — | Curseur, parallax, reveal, musique |
-| Google Fonts | CDN | Bebas Neue, Syne, DM Mono |
-| YouTube IFrame API | CDN | Lecteur audio de fond |
+| Technologie | Usage |
+|---|---|
+| HTML5 | Structure sémantique — fichier unique auto-suffisant |
+| CSS3 | Animations, Flexbox, `has()`, `conic-gradient`, `@property` |
+| JavaScript ES6+ | Curseur, Canvas 2D, physique, YouTube API, reveal |
+| Canvas 2D API | Animation personnages + dashboard Power BI |
+| Google Fonts CDN | Bebas Neue, Syne, DM Mono |
+| YouTube IFrame API | Lecteur audio ambiance |
 
 **Aucun framework. Aucun bundler. Aucune dépendance npm.**
 
